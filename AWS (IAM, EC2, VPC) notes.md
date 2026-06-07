@@ -1,4 +1,4 @@
-# AWS Class Notes — Day 1
+# AWS Class Notes — Phase 1
 
 # Topic
 
@@ -1037,3 +1037,732 @@ and simulate scaling using CPU load.
 * Cloud is transforming modern IT infrastructure globally.
 
 ---
+
+# AWS Class Notes — Phase 2
+
+## Topics Covered
+
+* Amazon S3
+* Amazon CloudFront
+* Amazon Route 53
+* AWS Lambda
+* Amazon RDS
+* Amazon CloudWatch
+* AWS CloudTrail
+
+---
+
+# 1. Amazon S3 (Simple Storage Service)
+
+## What is S3?
+
+Amazon S3 is an object storage service used to store and retrieve any amount of data from anywhere.
+
+### Features
+
+* Highly Durable (99.999999999%)
+* Highly Available
+* Scalable
+* Secure
+* Pay-as-you-go
+
+---
+
+## Components
+
+### Bucket
+
+A container that stores objects.
+
+**Examples:**
+
+* company-backups
+* website-images
+
+### Object
+
+Files stored inside a bucket.
+
+**Examples:**
+
+* image.jpg
+* report.pdf
+* video.mp4
+
+---
+
+## Storage Classes
+
+### S3 Standard
+
+* Frequently accessed data
+* High availability
+
+**Use Cases**
+
+* Websites
+* Applications
+
+### S3 Standard-IA
+
+* Infrequently accessed data
+* Lower cost
+
+**Use Cases**
+
+* Backups
+* DR Storage
+
+### S3 Glacier
+
+* Long-term archival
+* Lowest storage cost
+
+**Use Cases**
+
+* Compliance records
+* Historical backups
+
+---
+
+## Security Features
+
+* Bucket Policies
+* IAM Policies
+* Encryption
+* Versioning
+* MFA Delete
+
+---
+
+## Real-Time Example
+
+E-Commerce Website
+
+* Product Images → S3
+* Static Website → S3
+* Backups → S3
+
+---
+
+# 2. Amazon CloudFront
+
+## What is CloudFront?
+
+Amazon CloudFront is AWS's Content Delivery Network (CDN).
+
+It delivers content from the nearest AWS Edge Location to users.
+
+---
+
+## Why CloudFront?
+
+Without CloudFront:
+
+India User → US Server
+
+Higher latency.
+
+With CloudFront:
+
+India User → India Edge Location
+
+Lower latency and faster response.
+
+---
+
+## Components
+
+### Origin
+
+The source of content.
+
+**Examples**
+
+* S3 Bucket
+* EC2 Instance
+* Application Load Balancer
+
+### Edge Locations
+
+AWS data centers distributed globally that cache content.
+
+---
+
+## Benefits
+
+* Faster Website Performance
+* Reduced Latency
+* DDoS Protection
+* Global Content Delivery
+* Reduced Load on Origin Server
+
+---
+
+## Architecture
+
+User
+
+↓
+
+CloudFront
+
+↓
+
+S3 / EC2 / ALB
+
+---
+
+## Real-Time Example
+
+Netflix uses CDN technology to deliver content globally.
+
+---
+
+# 3. Amazon Route 53
+
+## What is Route 53?
+
+Route 53 is AWS's DNS (Domain Name System) service.
+
+It converts domain names into IP addresses.
+
+---
+
+## Example
+
+Domain:
+
+[www.amazon.com](http://www.amazon.com)
+
+DNS Resolution:
+
+54.x.x.x
+
+---
+
+## Features
+
+* Domain Registration
+* DNS Management
+* Health Checks
+* Traffic Routing
+
+---
+
+## Routing Policies
+
+### Simple Routing
+
+Single resource.
+
+Example:
+
+Website → One EC2 Instance
+
+### Weighted Routing
+
+Traffic distribution based on percentages.
+
+Example:
+
+* 80% → Old Application
+* 20% → New Application
+
+### Latency Routing
+
+Routes users to the nearest AWS Region.
+
+### Failover Routing
+
+Routes traffic to a backup resource when primary fails.
+
+---
+
+## Real-Time Example
+
+User
+
+↓
+
+Route 53
+
+↓
+
+CloudFront
+
+↓
+
+Application
+
+---
+
+# 4. AWS Lambda
+
+## What is Lambda?
+
+AWS Lambda is a serverless compute service.
+
+Run code without provisioning or managing servers.
+
+---
+
+## Key Concept
+
+You upload code.
+
+AWS manages:
+
+* Infrastructure
+* Scaling
+* Patching
+* Availability
+
+---
+
+## Components
+
+### Function
+
+The code you write.
+
+**Supported Languages**
+
+* Python
+* Node.js
+* Java
+* Go
+* .NET
+
+### Event
+
+Trigger that invokes Lambda.
+
+**Examples**
+
+* S3 Upload
+* API Gateway Request
+* CloudWatch Event
+
+### Handler
+
+Entry point of Lambda execution.
+
+Example:
+
+```python
+def lambda_handler(event, context):
+    return "Hello World"
+```
+
+---
+
+## Lambda Workflow
+
+User Request
+
+↓
+
+API Gateway
+
+↓
+
+Lambda
+
+↓
+
+Database
+
+↓
+
+Response
+
+---
+
+## Benefits
+
+* No Server Management
+* Automatic Scaling
+* High Availability
+* Pay Per Execution
+
+---
+
+## Limitations
+
+* Maximum Execution Time = 15 Minutes
+* Cold Starts
+* Stateless Execution
+
+---
+
+## Real-Time Example
+
+Image Upload to S3
+
+↓
+
+Lambda Trigger
+
+↓
+
+Resize Image
+
+↓
+
+Store Back to S3
+
+---
+
+# 5. Amazon RDS (Relational Database Service)
+
+## What is RDS?
+
+Amazon RDS is a managed relational database service.
+
+AWS manages:
+
+* Backups
+* Patching
+* Monitoring
+* High Availability
+
+---
+
+## Supported Databases
+
+* MySQL
+* PostgreSQL
+* MariaDB
+* Oracle
+* SQL Server
+
+---
+
+## Components
+
+### DB Instance
+
+Database server.
+
+### Storage
+
+Typically EBS-based storage.
+
+### Endpoint
+
+Connection URL for applications.
+
+Example:
+
+```text
+mydb.xxxxx.ap-south-1.rds.amazonaws.com
+```
+
+---
+
+## Multi-AZ Deployment
+
+Primary Database
+
+↓
+
+Synchronous Replication
+
+↓
+
+Standby Database
+
+---
+
+## Benefits
+
+* High Availability
+* Automated Backups
+* Disaster Recovery
+* Automatic Patching
+
+---
+
+## Public vs Private RDS
+
+### Public RDS
+
+* Internet Accessible
+
+### Private RDS
+
+* Accessible only within VPC
+* Recommended for Production
+
+---
+
+## Real-Time Example
+
+E-Commerce Database
+
+Stores:
+
+* Users
+* Orders
+* Payments
+* Inventory
+
+---
+
+# 6. Amazon CloudWatch
+
+## What is CloudWatch?
+
+CloudWatch is AWS's monitoring and observability service.
+
+Used to monitor AWS resources and applications.
+
+---
+
+## Monitors
+
+* CPU Utilization
+* Memory Usage
+* Disk Usage
+* Network Traffic
+
+---
+
+## Components
+
+### Metrics
+
+Performance measurements.
+
+Example:
+
+CPU Utilization = 75%
+
+### Alarms
+
+Triggers actions when thresholds are crossed.
+
+Example:
+
+CPU > 80%
+
+### Logs
+
+Stores application and infrastructure logs.
+
+Examples:
+
+* EC2 Logs
+* Lambda Logs
+* Application Logs
+
+### Dashboards
+
+Visual monitoring panels.
+
+---
+
+## Auto Scaling Integration
+
+CPU > 80%
+
+↓
+
+CloudWatch Alarm
+
+↓
+
+Auto Scaling
+
+↓
+
+Launch Additional EC2
+
+---
+
+## Real-Time Example
+
+Monitor a Production Web Server and send alerts when CPU utilization exceeds threshold.
+
+---
+
+# 7. AWS CloudTrail
+
+## What is CloudTrail?
+
+CloudTrail records AWS API activity.
+
+It helps answer:
+
+> Who did what, when, and from where?
+
+---
+
+## Example
+
+User deletes an EC2 instance.
+
+CloudTrail records:
+
+* Username
+* Action
+* Timestamp
+* Source IP
+
+---
+
+## Use Cases
+
+### Auditing
+
+Track user activities.
+
+### Security Investigation
+
+Investigate suspicious actions.
+
+### Compliance
+
+Meet regulatory requirements.
+
+---
+
+## Example Event
+
+DevOps Engineer
+
+↓
+
+Terminates EC2 Instance
+
+↓
+
+CloudTrail Logs Event
+
+---
+
+# CloudWatch vs CloudTrail
+
+| CloudWatch           | CloudTrail             |
+| -------------------- | ---------------------- |
+| Monitoring           | Auditing               |
+| Metrics & Logs       | API Activity           |
+| Performance Tracking | User Activity Tracking |
+| Alarms               | Compliance & Security  |
+
+---
+
+# Real-Time AWS Architecture
+
+User
+
+↓
+
+Route 53
+
+↓
+
+CloudFront
+
+↓
+
+S3 Static Website
+
+↓
+
+API Gateway
+
+↓
+
+Lambda
+
+↓
+
+RDS
+
+↓
+
+CloudWatch Monitoring
+
+↓
+
+CloudTrail Auditing
+
+---
+
+# Interview Questions
+
+## Amazon S3
+
+1. What is S3?
+2. What is a Bucket?
+3. What is Versioning?
+4. Difference between S3 Standard and Glacier?
+
+## CloudFront
+
+1. What is a CDN?
+2. What is CloudFront?
+3. What is an Edge Location?
+4. What are the benefits of CloudFront?
+
+## Route 53
+
+1. What is DNS?
+2. What is Route 53?
+3. Explain Routing Policies.
+4. What is Failover Routing?
+
+## Lambda
+
+1. What is Serverless Computing?
+2. What are Lambda Triggers?
+3. What is a Cold Start?
+4. What is the maximum Lambda execution time?
+
+## RDS
+
+1. What is RDS?
+2. What is Multi-AZ?
+3. Difference between RDS and EC2-hosted Database?
+4. Why keep RDS in a Private Subnet?
+
+## CloudWatch
+
+1. What are Metrics?
+2. What are Alarms?
+3. How does Auto Scaling integrate with CloudWatch?
+
+## CloudTrail
+
+1. What is CloudTrail?
+2. Difference between CloudWatch and CloudTrail?
+3. How do you identify who deleted an EC2 instance?
+
+---
+
+# Key Takeaways
+
+* Amazon S3 = Object Storage
+* CloudFront = CDN
+* Route 53 = DNS Service
+* Lambda = Serverless Compute
+* RDS = Managed Database
+* CloudWatch = Monitoring & Alerting
+* CloudTrail = Auditing & API Tracking
+
+---
+
+## Easy Memory Trick
+
+| Service    | Remember As |
+| ---------- | ----------- |
+| S3         | Storage     |
+| CloudFront | CDN         |
+| Route 53   | DNS         |
+| Lambda     | Serverless  |
+| RDS        | Database    |
+| CloudWatch | Monitoring  |
+| CloudTrail | Auditing    |
+
